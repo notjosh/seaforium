@@ -742,6 +742,10 @@ display: block;
 padding: 10px 0;
 }
 
+.content img {
+	max-width: 100%;
+}
+
 .content ul {
     margin: 5px 30px;
     list-style: disc outside none;
