@@ -12,16 +12,16 @@
   <?php foreach($thread_result->result() as $row): ?>
     <?php $thread = array(
       'subject' => $row->subject,
-      'created' => $row->created,
+      'created' => date(DateTime::ISO8601, strtotime($row->created)),
       'closed'  => '1' === $row->closed,
       'nsfw'    => '1' === $row->nsfw,
-      'thread_id' => $row->thread_id,
-      'user_id' => $row->user_id,
+      'thread_id' => (int)$row->thread_id,
+      'user_id' => (int)$row->user_id,
       'category' => $row->category,
       'author_name' => $row->author_name,
       'responder_name' => $row->responder_name,
-      'response_created' => $row->response_created,
-      'response_count' => $row->response_count,
+      'response_created' => date(DateTime::ISO8601, strtotime($row->response_created)),
+      'response_count' => (int)$row->response_count,
       'acq' => isset($acq_lookup[$row->acq]) ? $acq_lookup[$row->acq] : $acq_lookup['0'],
     ) ?>
 
