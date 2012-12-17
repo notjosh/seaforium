@@ -1376,12 +1376,6 @@ spoiler {
     position:relative;
     background: #EEE;
 }
-.spoiler:hover .spoiler-disclaimer {
-    display:none;
-}
-.spoiler:hover .spoiler-content {
-    visibility: visible;
-}
 
 .spoiler-disclaimer {
     position:absolute;

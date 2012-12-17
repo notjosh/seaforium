@@ -28,11 +28,21 @@ $.fn.selectRange = function(start, end) {
 function format_special(element)
 {
   $('spoiler').each(function() {
-    var html = '<div class="spoiler">' +
-      '<div class="spoiler-disclaimer">Warning! May contain spoilers</div>' +
-      '<div class="spoiler-content">' + $(this).html() + '</div>' +
-      '</div>';
-    $(this).replaceWith(html);
+    var warning_msg = 'Warning! May contain spoilers',
+        click_msg = 'Click to reveal. Mouseout to hide';
+    var $spoiler = $('<div class="spoiler"></div>'),
+        $disclaimer = $('<div class="spoiler-disclaimer"></div>').text(warning_msg),
+        $content = $('<div class="spoiler-content"></div>').html( $(this).html() );
+    $spoiler.append($disclaimer).append($content).hover(function(){
+      $disclaimer.text(click_msg);
+    }, function(){
+      $disclaimer.show().text(warning_msg);
+      $content.css('visibility', 'hidden');
+    }).click(function(){
+      $disclaimer.hide();
+      $content.css('visibility', 'visible');
+    });
+    $(this).replaceWith($spoiler);
   });
 
   var ytube = new RegExp('(?:")?http(?:s)?://(?:www.)?youtu(?:be)?.(?:[a-z]){2,3}' +
