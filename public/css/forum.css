@@ -1556,10 +1556,10 @@ color: #494949;
 .pagination .paging-text { display: none; }
 #post-thread, a#post-thread:hover { margin: 7px 2px 2px 2px; padding: 2px; }
 .thread.nsfw .one div { padding-left: 30px; }
-.thread.nsfw .three { padding-left: 30px; }
+.thread.nsfw .three { padding-left: 0; }
 .thread.nsfw {
     background-image: url(../img/naughty.gif);
-    background-position: 6px center;
+    background-position: 28px 0;
     background-repeat: no-repeat;
 }
 
