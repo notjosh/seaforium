@@ -1551,9 +1551,8 @@ color: #494949;
 #main-title { overflow: auto; height: auto; margin-bottom: 0px; }
 #main-title h3 { line-height: 1; font-size: 18px; }
 #main-title .favourite, #main-title .favourite.added, #main-title .hide-thread, #main-title .hide-thread.added { margin: 0 5px;}
-.two { display:none; float:none; }
-.thread .three { clear: left; width: auto; }
-.three .username, .three .time { float:none; display: inline; line-height: 16px; }
+.two { float:none; }
+.three .username, .three .time, .two .username, .two .time { float:none; display: inline; line-height: 16px; }
 .thread .one { width: 90%; float:none; }
 .thread .subject { margin: 0px; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; }
 .thread .four { width: auto; overflow:hidden; }
@@ -1710,18 +1709,20 @@ a {
 .subject {
     margin: 0 25px 3px 0;
 }
-.username, .two {
+.username {
     float:left;
 }
 
-.two {
-    width: 140px;
+.thread .two, .thread .three {
+    float:left;
+    clear:none;
+    width:45%;
+    white-space:nowrap;
+    overflow-x:hidden;
+    text-overflow:ellipsis;
 }
-.two .username:before {
-    content: "By: ";
-}
-.three .username:before {
-    content: "Last: ";
+.thread .three {
+    text-align:right;
 }
 .three .username:after, .two .username:after {
     content: ", ";
