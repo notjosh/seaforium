@@ -1700,6 +1700,12 @@ a {
 .subject-text {
     font-size: 18px;
     font-weight:bold;
+    margin-left:20px;
+}
+.thread .end-link {
+    position:absolute;
+    left:11px;
+    font-size:18px;
 }
 .subject {
     margin: 0 25px 3px 0;
