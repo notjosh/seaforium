@@ -1063,10 +1063,6 @@ height: 16px;
 
 #pm-box-controls .left {
 float: left;
-width:
-}
-
-#pm-box-controls .left {
 width: 60%;
 }
 
@@ -1574,7 +1570,9 @@ color: #494949;
 
 #special-threads { border-bottom: 0; }
 #search-title { clear: both; }
-#search-box { margin: 0 5px 5px 5px;}
+#search-box { margin: 0 5px 5px 5px; width:100%; }
+#search-phrase { float:left; width:82%!important; margin-right:2%; }
+#search-box input[type="submit"] { float:left!important; width:16%; }
 #search-title strong, #search-title br { display: none; }
 hr { display: none; }
 
@@ -1587,7 +1585,6 @@ hr { display: none; }
 #reply-rc p,
 #pinkies,
 #toggle-html,
-#messaging,
 #preferences,
 #thread-categories,
 .welcome > a,
@@ -1599,6 +1596,61 @@ div.category,
 #threads h3,
 #pobf {
     display: none;
+}
+.lc-node#messaging .messages {
+    line-height:22px;
+    padding-left:24px;
+    background-position:6px 4px;
+}
+#pm-inbox .message div {
+    overflow-x:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+#pm-box-controls {
+    line-height:17px;
+}
+#pm-box-controls .left {
+    width:auto;
+}
+#pm-box-controls .right {
+    float:right;
+    font-size:11px;
+    font-weight:bold;
+}
+#pm-box-controls .right a {
+    font-weight:normal;
+}
+#pm-inbox .message .marker {
+    width:6%;
+}
+#pm-inbox .message .subject {
+    width:56%;
+}
+#pm-inbox .message .time {
+    width:18%;
+}
+#pm-message .content {
+    margin-top:18px;
+    padding-left:4px;
+}
+#pm-message .pagination {
+    padding:0 10px;
+    height:auto;
+    line-height:31px;
+}
+#pm-message .pagination:before {
+content: "\2039 "
+}
+#pm-send p {
+    font-size:11px;
+    margin:10px 0 0 10px;
+}
+#pm-send textarea {
+    width:100%;
+}
+#pm-send input[type="submit"] {
+    margin-left:10px;
 }
 
 #thread-content-input {
