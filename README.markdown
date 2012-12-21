@@ -12,9 +12,9 @@ Installing
 
 Then follow the instructions for your platform
 
-### Ubuntu (Oneiric Ocelot)
+### Ubuntu (12.10)
 
-    $ sudo apt-get install tasksel python-pip
+    $ sudo apt-get install tasksel libmysqlclient-dev python-pip python-mysqldb
     $ sudo tasksel install lamp-server
     $ sudo pip install simplejson lxml MySQL-Python requests
 
@@ -29,7 +29,7 @@ In the above files replace the required values, replacements are marked by %REPL
 
     $ sudo a2enmod rewrite
     $ sudo a2ensite yayhooray.conf
-    $ sudo service apache2 reload
+    $ sudo service apache2 restart
 
     $ ./yayclient reset
 

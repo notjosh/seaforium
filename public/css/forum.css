@@ -1063,10 +1063,6 @@ height: 16px;
 
 #pm-box-controls .left {
 float: left;
-width:
-}
-
-#pm-box-controls .left {
 width: 60%;
 }
 
@@ -1376,12 +1372,6 @@ spoiler {
     position:relative;
     background: #EEE;
 }
-.spoiler:hover .spoiler-disclaimer {
-    display:none;
-}
-.spoiler:hover .spoiler-content {
-    visibility: visible;
-}
 
 .spoiler-disclaimer {
     position:absolute;
@@ -1557,9 +1547,8 @@ color: #494949;
 #main-title { overflow: auto; height: auto; margin-bottom: 0px; }
 #main-title h3 { line-height: 1; font-size: 18px; }
 #main-title .favourite, #main-title .favourite.added, #main-title .hide-thread, #main-title .hide-thread.added { margin: 0 5px;}
-.two { display:none; float:none; }
-.thread .three { clear: left; width: auto; }
-.three .username, .three .time { float:none; display: inline; line-height: 16px; }
+.two { float:none; }
+.three .username, .three .time, .two .username, .two .time { float:none; display: inline; line-height: 16px; }
 .thread .one { width: 90%; float:none; }
 .thread .subject { margin: 0px; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; }
 .thread .four { width: auto; overflow:hidden; }
@@ -1567,10 +1556,10 @@ color: #494949;
 .pagination .paging-text { display: none; }
 #post-thread, a#post-thread:hover { margin: 7px 2px 2px 2px; padding: 2px; }
 .thread.nsfw .one div { padding-left: 30px; }
-.thread.nsfw .three { padding-left: 30px; }
+.thread.nsfw .three { padding-left: 0; }
 .thread.nsfw {
     background-image: url(../img/naughty.gif);
-    background-position: 6px center;
+    background-position: 28px 0;
     background-repeat: no-repeat;
 }
 
@@ -1581,7 +1570,9 @@ color: #494949;
 
 #special-threads { border-bottom: 0; }
 #search-title { clear: both; }
-#search-box { margin: 0 5px 5px 5px;}
+#search-box { margin: 0 5px 5px 5px; width:100%; }
+#search-phrase { float:left; width:82%!important; margin-right:2%; }
+#search-box input[type="submit"] { float:left!important; width:16%; }
 #search-title strong, #search-title br { display: none; }
 hr { display: none; }
 
@@ -1594,7 +1585,6 @@ hr { display: none; }
 #reply-rc p,
 #pinkies,
 #toggle-html,
-#messaging,
 #preferences,
 #thread-categories,
 .welcome > a,
@@ -1606,6 +1596,61 @@ div.category,
 #threads h3,
 #pobf {
     display: none;
+}
+.lc-node#messaging .messages {
+    line-height:22px;
+    padding-left:24px;
+    background-position:6px 4px;
+}
+#pm-inbox .message div {
+    overflow-x:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+#pm-box-controls {
+    line-height:17px;
+}
+#pm-box-controls .left {
+    width:auto;
+}
+#pm-box-controls .right {
+    float:right;
+    font-size:11px;
+    font-weight:bold;
+}
+#pm-box-controls .right a {
+    font-weight:normal;
+}
+#pm-inbox .message .marker {
+    width:6%;
+}
+#pm-inbox .message .subject {
+    width:56%;
+}
+#pm-inbox .message .time {
+    width:18%;
+}
+#pm-message .content {
+    margin-top:18px;
+    padding-left:4px;
+}
+#pm-message .pagination {
+    padding:0 10px;
+    height:auto;
+    line-height:31px;
+}
+#pm-message .pagination:before {
+content: "\2039 "
+}
+#pm-send p {
+    font-size:11px;
+    margin:10px 0 0 10px;
+}
+#pm-send textarea {
+    width:100%;
+}
+#pm-send input[type="submit"] {
+    margin-left:10px;
 }
 
 #thread-content-input {
@@ -1706,22 +1751,30 @@ a {
 .subject-text {
     font-size: 18px;
     font-weight:bold;
+    margin-left:20px;
+}
+.thread .end-link {
+    position:absolute;
+    left:11px;
+    font-size:18px;
 }
 .subject {
     margin: 0 25px 3px 0;
 }
-.username, .two {
+.username {
     float:left;
 }
 
-.two {
-    width: 140px;
+.thread .two, .thread .three {
+    float:left;
+    clear:none;
+    width:45%;
+    white-space:nowrap;
+    overflow-x:hidden;
+    text-overflow:ellipsis;
 }
-.two .username:before {
-    content: "By: ";
-}
-.three .username:before {
-    content: "Last: ";
+.thread .three {
+    text-align:right;
 }
 .three .username:after, .two .username:after {
     content: ", ";

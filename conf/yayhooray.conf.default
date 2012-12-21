@@ -6,7 +6,7 @@ NameVirtualHost *:80
   Redirect 301 / http://%HOST%/
 
   ServerAdmin webmaster@localhost
-  DocumentRoot %ROOT_PATH%
+  DocumentRoot %ROOT_PATH%/public
 
   <Directory />
     Options FollowSymLinks
@@ -26,7 +26,7 @@ NameVirtualHost *:80
 
   ServerName %HOST%
   ServerAdmin webmaster@localhost
-  DocumentRoot %ROOT_PATH%
+  DocumentRoot %ROOT_PATH%/public
 
   <Directory />
     Options FollowSymLinks

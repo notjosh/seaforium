@@ -5,4 +5,4 @@ password = %MYSQL_PASS%
 database = forum
 
 [site]
-url = http://%HOST/
+url = http://%HOST%/
