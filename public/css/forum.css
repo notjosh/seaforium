@@ -1581,9 +1581,7 @@ hr { display: none; }
 #thread-control,
 .user-information,
 #information-bio, #information-desc, #information-widget, #photostream,
-#reply-lc,
 #reply-rc p,
-#pinkies,
 #toggle-html,
 #preferences,
 #thread-categories,
@@ -1597,6 +1595,15 @@ div.category,
 #pobf {
     display: none;
 }
+
+#pinkies a {
+    margin:0 2px 2px;
+}
+#pinkies img {
+    width:20px;
+    height:20px;
+}
+
 .lc-node#messaging .messages {
     line-height:22px;
     padding-left:24px;
@@ -1654,8 +1661,8 @@ content: "\2039 "
 }
 
 #thread-content-input {
-    width: 95%;
-    margin: 0px auto;
+    width:98%;
+    margin:5px auto;
 }
 
 .login { margin-bottom: 0px; }
@@ -1911,7 +1918,12 @@ label { display:block; margin-bottom:5px; font-weight:bold;}
     font-weight:normal;
 }
 
-#reply-lc { padding-left:10px; }
+#reply-lc h4 { display:none; }
+#reply-lc p { display:none; }
+#reply-lc { padding-left:0; float:none; margin-bottom:15px; }
+#post-shortcuts { width:auto; }
+#post-shortcuts li { display:inline; }
+#post-shortcuts li a { font-size:14px; }
 
 #main-title {
     display:none;
