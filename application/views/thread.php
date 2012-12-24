@@ -186,9 +186,9 @@ foreach($comments as $row) {
 
 <div class="dotted-bar replypad"></div>
 <?php
-if (!$logged_in || $information->closed === '1' || $information->author_acquaintance_type === 2)
+if (!$logged_in || $information->closed || $information->author_acquaintance_type === 2)
 {
-  if ($information->closed === '1')
+  if ($information->closed)
   {
     ?><h3>This thread is closed</h3><?php
   }
