@@ -28,19 +28,13 @@ $.fn.selectRange = function(start, end) {
 function format_special(element)
 {
   $('spoiler').each(function() {
-    var warning_msg = 'Warning! May contain spoilers',
-        click_msg = 'Click to reveal. Mouseout to hide';
+    var warning_msg = 'Warning! May contain spoilers. Click to reveal.'
     var $spoiler = $('<div class="spoiler"></div>'),
         $disclaimer = $('<div class="spoiler-disclaimer"></div>').text(warning_msg),
         $content = $('<div class="spoiler-content"></div>').html( $(this).html() );
-    $spoiler.append($disclaimer).append($content).hover(function(){
-      $disclaimer.text(click_msg);
-    }, function(){
-      $disclaimer.show().text(warning_msg);
-      $content.css('visibility', 'hidden');
-    }).click(function(){
-      $disclaimer.hide();
-      $content.css('visibility', 'visible');
+    $spoiler.append($disclaimer).append($content).click(function(){
+      $disclaimer.toggle();
+      $content.toggleClass('spoiled');
     });
     $(this).replaceWith($spoiler);
   });
