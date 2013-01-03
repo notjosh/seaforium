@@ -33,7 +33,11 @@ class Auth extends Controller
       return send_json($this->output, 401, $json);
     }
 
-    return send_json($this->output, 200, array('ok' => true));
+    return send_json($this->output, 200, array(
+      'ok'       => true,
+      'user_id'  => (int)$this->session->userdata('user_id'),
+      'username' => $this->session->userdata('username'),
+    ));
   }
 
   function activate($key)
