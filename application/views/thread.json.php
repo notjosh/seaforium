@@ -11,6 +11,7 @@
   <?php $comment_out = array_merge((array)$row, array(
     'created' => date(DateTime::ISO8601, $row->created),
     'comment_id' => (int)$row->comment_id,
+    'deleted' => '1' === $row->deleted,
   )) ?>
 
   <?php $comments_out[] = $comment_out ?>
