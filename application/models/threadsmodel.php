@@ -33,11 +33,7 @@ class Threadsmodel extends Model
       responders.username AS responder_name,
       responses.created AS response_created,
       IFNULL(acquaintances.type, 0) AS acq,
-      (
-        SELECT count(comments.comment_id)
-        FROM comments
-        WHERE comments.thread_id = threads.thread_id
-      ) AS response_count
+      threads.comments_count AS response_count
       ', FALSE);
 
     $this->db->from('threads');

@@ -66,6 +66,7 @@ class Thread extends Controller {
         ));
 
         $this->user_dal->update_comment_count($this->meta['user_id']);
+        $this->thread_model->update_comment_count($thread_id);
 
         $shown = $this->meta['comments_shown'];
 
