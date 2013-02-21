@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.17, for osx10.6 (i386)
+-- MySQL dump 10.13  Distrib 5.5.28, for debian-linux-gnu (i686)
 --
 -- Host: localhost    Database: forum
 -- ------------------------------------------------------
--- Server version	5.5.17
+-- Server version 5.5.28-0ubuntu0.12.10.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -70,7 +70,7 @@ CREATE TABLE `comments` (
   KEY `FK_comments_threads` (`thread_id`),
   CONSTRAINT `FK_comments_threads` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,6 +108,22 @@ CREATE TABLE `hidden_threads` (
   KEY `FK_hidden_threads_threads` (`thread_id`),
   CONSTRAINT `FK_hidden_threads_threads` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_hidden_threads_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ip_addresses`
+--
+
+DROP TABLE IF EXISTS `ip_addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ip_addresses` (
+  `address_id` varchar(32) NOT NULL,
+  `user_id` int(8) NOT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`address_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -205,7 +221,8 @@ CREATE TABLE `sessions` (
   `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
   `user_data` text COLLATE utf8_bin,
   `user_id` int(8) DEFAULT '0',
-  PRIMARY KEY (`session_id`)
+  PRIMARY KEY (`session_id`),
+  KEY `sessions_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -227,12 +244,13 @@ CREATE TABLE `threads` (
   `closed` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` tinyint(4) NOT NULL DEFAULT '0',
   `last_comment_created` datetime NOT NULL,
+  `comments_count` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`thread_id`),
   KEY `FK_threads_users` (`user_id`),
   KEY `FK_threads_category` (`category`),
   CONSTRAINT `FK_threads_category` FOREIGN KEY (`category`) REFERENCES `categories` (`category_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_threads_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +319,7 @@ CREATE TABLE `user_profiles` (
   PRIMARY KEY (`id`),
   KEY `FK_user_profiles_users` (`user_id`),
   CONSTRAINT `FK_user_profiles_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,35 +333,31 @@ CREATE TABLE `users` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) COLLATE utf8_bin NOT NULL,
   `password` varchar(72) COLLATE utf8_bin NOT NULL,
-  `invites` tinyint(1) DEFAULT '0',
   `email` varchar(100) COLLATE utf8_bin NOT NULL,
   `activated` tinyint(1) NOT NULL DEFAULT '1',
   `banned` tinyint(1) NOT NULL DEFAULT '0',
   `ban_reason` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `new_password_key` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `new_password_requested` datetime DEFAULT NULL,
-  `new_email` varchar(100) COLLATE utf8_bin DEFAULT NULL,
-  `new_email_key` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   `last_ip` varchar(16) COLLATE utf8_bin NOT NULL,
   `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `threads_shown` int(3) DEFAULT '50',
   `comments_shown` int(3) DEFAULT '100',
-  `yh_username` varchar(19) COLLATE utf8_bin DEFAULT NULL,
   `view_html` tinyint(1) NOT NULL DEFAULT '1',
   `new_post_notification` tinyint(1) DEFAULT '1',
   `random_titles` tinyint(1) DEFAULT '1',
   `timezone` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `emoticon` tinyint(4) DEFAULT '0',
-  `invited_by` int(11) DEFAULT '0',
   `custom_css` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `threads_count` int(11) NOT NULL DEFAULT '0',
   `comments_count` int(11) NOT NULL DEFAULT '0',
   `hide_enemy_posts` tinyint(1) NOT NULL DEFAULT '1',
-  `chat_fixed_size` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  `custom_js` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `hide_ads` tinyint(1) NOT NULL DEFAULT '0',
+  `chat_fixed_size` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `users_username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,4 +385,4 @@ CREATE TABLE `yh_invites` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-11-22 16:59:49
+-- Dump completed on 2013-02-20 22:09:03
