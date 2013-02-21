@@ -242,4 +242,10 @@ class Thread_model extends Model
 			)
 		);
   }
+
+  function update_comment_count($thread_id)
+  {
+    $sql = "UPDATE threads SET comments_count = comments_count+1 WHERE thread_id = ?";
+    return $this->db->query($sql, $thread_id);
+  }
 }

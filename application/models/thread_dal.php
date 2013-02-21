@@ -213,12 +213,6 @@ class Thread_dal extends Model
     return $this->db->query($sql, $thread_id)->row()->max_rows;
   }
 
-  function update_comment_count($thread_id)
-  {
-    $sql = "UPDATE threads SET comments_count = comments_count+1 WHERE id = ?";
-    return $this->db->query($sql, $user_id);
-  }
-
   /**
    * Get a count of all the comments for a given thread id
    *
