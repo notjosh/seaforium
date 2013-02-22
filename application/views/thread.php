@@ -16,7 +16,7 @@ $logged_in = $this->sauth->is_logged_in();
 
   <?php if ($information->owner): ?>
     <script type="text/html" id="title-input">
-      <input type="text" id="title-input" />
+      <input type="text" id="title-input" maxlength="96" />
       <input type="submit" value="Save" id="save-title" />
       <input type="button" value="Cancel" id="cancel-title" />
     </script>

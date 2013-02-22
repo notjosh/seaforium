@@ -70,7 +70,7 @@ CREATE TABLE `comments` (
   KEY `FK_comments_threads` (`thread_id`),
   CONSTRAINT `FK_comments_threads` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +140,7 @@ CREATE TABLE `login_attempts` (
   `login` varchar(50) COLLATE utf8_bin NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,11 +152,11 @@ DROP TABLE IF EXISTS `pm_content`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pm_content` (
   `message_id` int(7) NOT NULL AUTO_INCREMENT,
-  `subject` varchar(42) DEFAULT NULL,
+  `subject` varchar(96) DEFAULT NULL,
   `content` text,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +181,7 @@ CREATE TABLE `pm_inbox` (
   CONSTRAINT `FK_pm_inbox_message_id` FOREIGN KEY (`message_id`) REFERENCES `pm_content` (`message_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_pm_inbox_from_id` FOREIGN KEY (`from_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_pm_inbox_to_id` FOREIGN KEY (`to_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +236,7 @@ DROP TABLE IF EXISTS `threads`;
 CREATE TABLE `threads` (
   `thread_id` int(7) NOT NULL AUTO_INCREMENT,
   `user_id` int(8) NOT NULL,
-  `subject` varchar(64) CHARACTER SET utf8 NOT NULL,
+  `subject` varchar(96) CHARACTER SET utf8 NOT NULL,
   `category` int(2) DEFAULT '0',
   `created` datetime NOT NULL,
   `last_comment_id` int(8) NOT NULL DEFAULT '0',
@@ -250,7 +250,7 @@ CREATE TABLE `threads` (
   KEY `FK_threads_category` (`category`),
   CONSTRAINT `FK_threads_category` FOREIGN KEY (`category`) REFERENCES `categories` (`category_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_threads_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,12 +262,12 @@ DROP TABLE IF EXISTS `titles`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `titles` (
   `title_id` int(7) NOT NULL AUTO_INCREMENT,
-  `title_text` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `title_text` varchar(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `author_id` int(8) NOT NULL,
   PRIMARY KEY (`title_id`),
   KEY `FK_titles_users` (`author_id`),
   CONSTRAINT `FK_titles_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -385,4 +385,4 @@ CREATE TABLE `yh_invites` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-20 22:09:03
+-- Dump completed on 2013-02-22 18:30:39
