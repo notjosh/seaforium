@@ -109,12 +109,7 @@ function format_special(element)
     // Reverse so we handle nested quotes
     $(this).find('blockquote').reverse().each(function(){
       var user = $(this).attr('title') || 'Someone';
-      $(this).after(
-	$('<div>', {
-	  'class': 'tquote',
-	  'html': '<div class="tqname">' + user + ' said:</div>'+$(this).html()
-	})
-      ).remove();
+      $(this).prepend('<div class="tqname">' + user + ' said:</div>').addClass('tquote');
     });
 
     $(this).find('.youtube_wrapper').each(function() {
