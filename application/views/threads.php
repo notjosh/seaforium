@@ -154,7 +154,7 @@ foreach($thread_result->result() as $row) {
 
 <?php if ($logged_in) { ?>
   <script type="text/html" id="title-input">
-    <input type="text" id="title-input" />
+    <input type="text" id="title-input" maxlength="36" />
     <input type="submit" value="Save" id="save-title" />
     <input type="button" value="Cancel" id="cancel-title" />
     (36 chars max)

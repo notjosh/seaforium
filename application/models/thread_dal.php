@@ -213,7 +213,6 @@ class Thread_dal extends Model
     return $this->db->query($sql, $thread_id)->row()->max_rows;
   }
 
-
   /**
    * Get a count of all the comments for a given thread id
    *

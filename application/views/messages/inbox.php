@@ -53,8 +53,8 @@ $unread = $row->read === '0' ? ' unread' : '';
 						<div class="sender">
 							<a href="/user/<?php echo $row->username; ?>"><?php echo $row->username; ?></a>
 						</div>
-						<div class="time">
-							<?php echo _format_pm_time($row->created); ?>
+						<div class="time" title="<?php echo _format_pm_time($row->created); ?>">
+							<?php echo timespan(strtotime($row->created), time()) ?>
 						</div>
 					</div>
 
