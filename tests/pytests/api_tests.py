@@ -24,8 +24,8 @@ class TestAPIFunctions(unittest.TestCase):
         DbClient.reset_database(cfg.get('db', 'host'), cfg.get('db', 'database'),
                                 cfg.get('db', 'username'), cfg.get('db', 'password'))
 
-        # user = YayClient.register(cls.opts, 'yay_api_tester', 'api@api.com', 'api', 'api')
-        # thread = YayClient.post_thread(cls.opts, user.cookies, 2, "Test", "Test")
+        # user = YayClient.register(cls.opts, 'yayapitester', 'yayapitester@example.com', 'api', 'api')
+        # thread = YayClient.post_thread(cls.opts, user.cookies, 2, "Test thread", "Test thread content")
 
         # cls.cookies = user.cookies
         # cls.thread = urlparse(thread.url).path[1:]
@@ -33,6 +33,7 @@ class TestAPIFunctions(unittest.TestCase):
     def test_register(self):
         r = YayAPIClient.register(self.opts, 'testregister1', 'test_register1@example.com', 'a', 'a')
         j = json.loads(r.content)
+
         self.assertEqual(r.status_code, 200)
         self.assertFalse('errors' in j)
         self.assertTrue('ok' in j)
@@ -91,25 +92,59 @@ class TestAPIFunctions(unittest.TestCase):
         self.assertEqual(r.status_code, 401)
         self.assertTrue('error' in j)
 
-    @unittest.skip("skipping not implemented test")
     def test_forgot_password(self):
-        self.fail("not implemented")
+        YayAPIClient.register(self.opts, 'testforgotpassword1', 'testforgotpassword1@example.com', 'a', 'a')
 
-    @unittest.skip("skipping not implemented test")
+        r = YayAPIClient.forgot_password(self.opts, 'testforgotpassword1@example.com')
+        j = json.loads(r.content)
+        self.assertEqual(r.status_code, 200)
+        self.assertFalse('error' in j)
+        self.assertTrue('ok' in j)
+
+    def test_forgot_password_key(self):
+        r = YayAPIClient.forgot_password_key(self.opts)
+        j = json.loads(r.content)
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue('key' in j)
+
     def test_forgot_password_fail(self):
-        self.fail("not implemented")
+        YayAPIClient.register(self.opts, 'testforgotpasswordfail1', 'testforgotpasswordfail1@example.com', 'a', 'a')
 
-    @unittest.skip("skipping not implemented test")
+        r = YayAPIClient.forgot_password(self.opts, 'nonexistant@example.com')
+        j = json.loads(r.content)
+        self.assertEqual(r.status_code, 412)
+        self.assertTrue('error' in j)
+
+        r = YayAPIClient.forgot_password(self.opts, 'testforgotpasswordfail1@example.com', 'xxx')
+        j = json.loads(r.content)
+        self.assertEqual(r.status_code, 412)
+        self.assertTrue('error' in j)
+
     def test_logout(self):
-        self.fail("not implemented")
+        r = YayAPIClient.register(self.opts, 'testlogout1', 'testlogout1@example.com', 'a', 'a')
+        self.assertTrue(YayAPIClient.is_logged_in(self.opts, r.cookies))
+        r = YayAPIClient.logout(self.opts, r.cookies)
+        j = json.loads(r.content)
+        self.assertEqual(r.status_code, 200)
+        self.assertFalse('error' in j)
+        self.assertTrue('ok' in j)
+        self.assertFalse(YayAPIClient.is_logged_in(self.opts, r.cookies))
 
-    @unittest.skip("skipping not implemented test")
-    def test_set_title(self):
-        self.fail("not implemented")
+    def test_edit_title(self):
+        r = YayAPIClient.register(self.opts, 'testsettitle1', 'testsettitle1@example.com', 'a', 'a')
+        r = YayAPIClient.edit_title(self.opts, r.cookies, "foo")
+        j = json.loads(r.content)
+        self.assertEqual(r.status_code, 200)
+        self.assertFalse('error' in j)
+        self.assertTrue('ok' in j)
+        self.assertTrue('title' in j)
 
-    @unittest.skip("skipping not implemented test")
-    def test_set_title_fail(self):
-        self.fail("not implemented")
+    def test_edit_title_fail(self):
+        r = YayAPIClient.register(self.opts, 'testsettitle1', 'testsettitle1@example.com', 'a', 'a')
+        r = YayAPIClient.edit_title(self.opts, r.cookies, "")
+        j = json.loads(r.content)
+        self.assertEqual(r.status_code, 412)
+        self.assertTrue('error' in j)
 
     @unittest.skip("skipping not implemented test")
     def test_list_threads(self):

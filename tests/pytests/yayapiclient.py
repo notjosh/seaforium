@@ -1,29 +1,30 @@
 import requests
 import lxml
 import time
+import json
 
 from urlparse import urlparse
 from lxml import html
 
 # todo: I suppose refactoring YayAPIClient and YayClient to share code would make sense. yrmom.
 #       at this point, the only real difference is '?format=json'. if that remains the case in future
-#		let's merge!
+#       let's merge!
 class YayAPIClient:
 
     def __init__(self, options):
         self.options = options
 
     @staticmethod
-    def post_thread(opts, cookies, cat, subject, content, category=1):
+    def post_thread(opts, cookies, cat, subject, content):
         data = {
-            "category[]": category,
+            "category[]": cat,
             "content": content,
             "subject": subject
         }
         return YayAPIClient.time_req(opts, 'post', 'newthread', data, cookies)
 
     @staticmethod
-    def time_req(opts, method, path, data, cookies=None):
+    def time_req(opts, method, path, data=[], cookies=None):
         if ("timer_file" in opts):
             time0 = time.time()
             ret = requests.request(method, opts['url'] + path, data=data,
@@ -54,14 +55,32 @@ class YayAPIClient:
         creds = dict(username = username, password = password)
         return YayAPIClient.time_req(opts, 'post', 'auth/login', creds)
 
+    @staticmethod
+    def logout(opts, cookies):
+        return YayAPIClient.time_req(opts, 'post', 'auth/logout', [], cookies)
 
     @staticmethod
-    def forgot_password(opts, email):
-        keyreq = requests.get(opts['url'] + 'auth/forgot_password')
-        tree = lxml.html.fromstring(keyreq.content)
-        key = tree.get_element_by_id('forgot-key').value
+    def forgot_password_key(opts):
+        return YayAPIClient.time_req(opts, 'get', 'auth/forgot_password')
+
+    @staticmethod
+    def edit_title(opts, cookies, title):
+        data = dict(title = title)
+        return YayAPIClient.time_req(opts, 'post', 'title/edit', data, cookies)
+
+    @staticmethod
+    def forgot_password(opts, email, key=None):
+        cookies=[]
+
+        if (None == key):
+            r = YayAPIClient.forgot_password_key(opts)
+            cookies = r.cookies
+            j = json.loads(r.content)
+            key = j['key']
+
         creds = dict(email = email, key = key)
-        return YayAPIClient.time_req(opts, 'post', 'auth/forgot_password', creds)
+
+        return YayAPIClient.time_req(opts, 'post', 'auth/forgot_password', creds, cookies)
 
 
     @staticmethod
