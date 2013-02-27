@@ -109,7 +109,16 @@ class Auth extends Controller
 
       $this->sauth->create_user($username, $email, $password);
       $this->sauth->login($username, $password);
-      redirect('/');
+
+      if (isset($_GET['format']) && 'json' === $_GET['format']) {
+        return send_json($this->output, 200, array(
+          'ok'       => true,
+          'user_id'  => (int)$this->session->userdata('user_id'),
+          'username' => $this->session->userdata('username'),
+        ));
+      } else {
+        redirect('/');
+      }
     }
 
     $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
