@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Auth extends Controller
+class Auth extends MY_Controller
 {
   function __construct()
   {
@@ -71,7 +71,14 @@ class Auth extends Controller
   {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $this->sauth->logout();
-      return redirect('/');
+
+      if ($this->is_request_json()) {
+        return send_json($this->output, 200, array(
+          'ok'       => true,
+        ));
+      } else {
+        return redirect('/');
+      }
     }
   }
 
@@ -110,7 +117,7 @@ class Auth extends Controller
       $this->sauth->create_user($username, $email, $password);
       $this->sauth->login($username, $password);
 
-      if (isset($_GET['format']) && 'json' === $_GET['format']) {
+      if ($this->is_request_json()) {
         return send_json($this->output, 200, array(
           'ok'       => true,
           'user_id'  => (int)$this->session->userdata('user_id'),
