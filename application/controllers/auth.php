@@ -145,7 +145,7 @@ class Auth extends Controller
     $key = $this->form_validation->set_value('key');
 
     // make sure the session key matches
-    if (!$key === $this->session->userdata('session_id')) {
+    if ($key !== $this->session->userdata('session_id')) {
       return send_json($this->output, 412, array('error' => "invalid key"));
     }
 
