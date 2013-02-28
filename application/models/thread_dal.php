@@ -49,7 +49,7 @@ class Thread_dal extends Model
   {
   	
   	// check if user has posted $threads_per in the last $minutes;
-  	$threads_per = 200000000;
+  	$threads_per = 2;
   	$minutes = 1;
   	
   	$sql = "SELECT * FROM threads WHERE user_id = ? AND created > (now() - INTERVAL ? MINUTE)";
