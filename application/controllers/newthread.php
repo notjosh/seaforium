@@ -1,6 +1,6 @@
 <?php
 
-class Newthread extends Controller {
+class Newthread extends MY_Controller {
 
   function Newthread()
   {
@@ -10,8 +10,13 @@ class Newthread extends Controller {
     $this->load->library('form_validation');
     $this->load->model('thread_dal');
 
-    if (!$this->sauth->is_logged_in())
-      redirect('/');
+    if (!$this->sauth->is_logged_in()) {
+      if ($this->is_request_json()) {
+        return send_json($this->output, 403, array('error' => 'not logged in'));
+      } else {
+        redirect('/');
+      }
+    }
   }
 
   function index()
@@ -54,13 +59,17 @@ class Newthread extends Controller {
       $this->thread_dal->new_comment($comment);
       $url = '/thread/'.$comment['thread_id'] . '/' . url_title($subject, 'dash', TRUE);
 
-      if ($ajax) {
-        return send_json($this->output, 201, array('ok' => true, 'url' =>  $url));
+      if ($ajax || $this->is_request_json()) {
+        return send_json($this->output, 201, array(
+          'ok' => true,
+          'url' =>  $url,
+          'thread_id' =>  $comment['thread_id'],
+          ));
       } else {
         redirect($url);
       }
     } else {
-      if ($_SERVER['REQUEST_METHOD'] === 'POST' && $ajax) {
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($ajax || $this->is_request_json())) {
         return send_json($this->output, 400, array('error' => true,
                                                    'reason' =>  validation_errors()));
       }

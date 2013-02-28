@@ -13,4 +13,6 @@ $message_json = array(
 
 ?>
 
-<?php echo json_encode($message_json) ?>
+<?php echo json_encode(array(
+	'message' => $message_json
+)) ?>

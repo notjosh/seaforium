@@ -1,6 +1,6 @@
 <?php
 
-class Thread extends Controller {
+class Thread extends MY_Controller {
 
   function Thread()
   {
@@ -58,7 +58,7 @@ class Thread extends Controller {
         $content = $this->form_validation->set_value('content');
         $ajax = $this->form_validation->set_value('ajax');
 
-        $this->thread_model->new_comment((object) array(
+        $comment_id = $this->thread_model->new_comment((object) array(
           'thread_id' => $thread_id,
           'user_id' => $this->meta['user_id'],
           'content' => _process_post($content),
@@ -78,8 +78,13 @@ class Thread extends Controller {
         // otherwise wont redirecr
         $redirection = $uri .'/p/'. $last_page .'/'. '#bottom';
 
-        if ($ajax) {
-          return send_json($this->output, 201, array('ok' => true, 'url' =>  $redirection));
+        if ($ajax || $this->is_request_json()) {
+          return send_json($this->output, 201, array(
+            'ok' => true,
+            'url' =>  $redirection,
+            'comment_id' => $comment_id,
+            'thread_id' => $thread_id,
+          ));
         } else {
           redirect($redirection);
         }
@@ -113,6 +118,9 @@ class Thread extends Controller {
         url_title($thread->information->subject, 'dash', TRUE) .'">'.
         $thread->information->subject .'</a>'
     );
+
+    $thread->pagination_object = $this->pagination;
+    $thread->pagination_row_offset = (int)$page;
 
     $thread->information->page = $page;
 

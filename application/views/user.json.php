@@ -7,6 +7,10 @@ function null_if_empty_string($string) {
 	return $string;
 }
 
+if (null === $recent_posts) {
+	$recent_posts = array();
+}
+
 foreach ($recent_posts as $key => $post) {
 	$recent_posts[$key]['created'] = date(DateTime::ISO8601, strtotime($post['created']));
 }

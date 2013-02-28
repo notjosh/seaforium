@@ -54,7 +54,9 @@ class Find extends Controller {
        'title' => $this->thread_dal->get_front_title(),
        'thread_result' => $this->thread_dal->find_thread_by_title($this->meta['user_id'], $pagination, $display, $filtering['filter'], $filtering['order'], $search_phrase),
        'pagination' => $this->pagination->create_links()
-       .'<span class="paging-text">' . ($pagination + 1) . ' - ' . $end . ' of ' . $thread_count . ' Threads</span>',
+           .'<span class="paging-text">' . ($pagination + 1) . ' - ' . $end . ' of ' . $thread_count . ' Threads</span>',
+       'pagination_object' => $this->pagination,
+       'pagination_row_offset' => (int)$pagination,
        'tab_links' => strlen($filter) > 0 ? '/f/'.$filter.'/' : '/o/',
        'tab_orders' => array(
          'started' => $ordering == 'started' && $dir == 'desc' ? 'asc' : 'desc',

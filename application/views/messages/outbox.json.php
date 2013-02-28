@@ -15,4 +15,6 @@ foreach($messages->result() as $row) {
 
 ?>
 
-<?php echo json_encode($messages_json) ?>
+<?php echo json_encode(array(
+	'messages' => $messages_json
+)) ?>

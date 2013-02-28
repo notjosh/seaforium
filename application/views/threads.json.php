@@ -30,6 +30,15 @@
 <?php endif ?>
 
 <?php echo json_encode(array(
-  'title' => $title,
+  'title' => array(
+    'text'     => $title->title_text,
+    'username' => $title->username,
+  ),
   'threads' => $threads,
+  'pagination' => array(
+    'row_count'     => (int)$pagination_object->total_rows,
+    'rows_per_page' => (int)$pagination_object->per_page,
+    'row_offset'    => (int)$pagination_row_offset,
+    'current_page'  => (int)$pagination_object->cur_page,
+  ),
 )) ?>

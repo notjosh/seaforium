@@ -20,5 +20,10 @@
 <?php echo json_encode(array(
   'information' => $information_out,
   'comments'    => $comments_out,
-  'pagination'  => $pagination,
+  'pagination' => array(
+    'row_count'     => (int)$pagination_object->total_rows,
+    'rows_per_page' => (int)$pagination_object->per_page,
+    'row_offset'    => (int)$pagination_row_offset,
+    'current_page'  => (int)$pagination_object->cur_page,
+  ),
 )) ?>
