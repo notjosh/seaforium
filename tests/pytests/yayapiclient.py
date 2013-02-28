@@ -15,15 +15,6 @@ class YayAPIClient:
         self.options = options
 
     @staticmethod
-    def post_thread(opts, cookies, cat, subject, content):
-        data = {
-            "category[]": cat,
-            "content": content,
-            "subject": subject
-        }
-        return YayAPIClient.time_req(opts, 'post', 'newthread', data, cookies)
-
-    @staticmethod
     def time_req(opts, method, path, data=[], cookies=None):
         if ("timer_file" in opts):
             time0 = time.time()
@@ -38,9 +29,58 @@ class YayAPIClient:
                                     cookies=cookies, allow_redirects=True)
 
     @staticmethod
-    def post_reply(opts, cookies, thread, content):
+    def list_threads(opts, pagination_start=None, filter=None):
+        path = ''
+
+        if (pagination_start):
+            path += 'p/' + str(pagination_start) + '/'
+
+        if (filter):
+            path += 'f/' + filter + '/'
+
+        if (pagination_start):
+            path += 'desc/'
+
+        # strip trailing /
+        path = path.rstrip('/')
+
+        return YayAPIClient.time_req(opts, 'get', path)
+
+    @staticmethod
+    def search(opts, term, pagination_start=None):
+        path = 'find/' + term
+
+        if (pagination_start):
+            path += '/p/' + str(pagination_start) + '/desc'
+
+        return YayAPIClient.time_req(opts, 'get', path)
+
+    @staticmethod
+    def post_thread(opts, cookies, cat, subject, content):
+        data = {
+            "category[]": str(cat),
+            "content": content,
+            "subject": subject
+        }
+        return YayAPIClient.time_req(opts, 'post', 'newthread', data, cookies)
+
+    @staticmethod
+    def get_thread(opts, thread_id):
+        return YayAPIClient.time_req(opts, 'get', 'thread/' + str(thread_id))
+
+    @staticmethod
+    def post_comment(opts, cookies, thread_id, content):
         data = {"content": content}
-        return YayAPIClient.time_req(opts, 'post', thread, data, cookies)
+        return YayAPIClient.time_req(opts, 'post', 'thread/' + str(thread_id), data, cookies)
+
+    @staticmethod
+    def edit_comment(opts, cookies, comment_id, content):
+        data = {
+            'comment_id': comment_id,
+            'content': content,
+        }
+
+        return YayAPIClient.time_req(opts, 'post', 'ajax/comment_save', data, cookies)
 
     @staticmethod
     def register(opts, username, email, password, confirm_password):
@@ -67,6 +107,31 @@ class YayAPIClient:
     def edit_title(opts, cookies, title):
         data = dict(title = title)
         return YayAPIClient.time_req(opts, 'post', 'title/edit', data, cookies)
+
+    @staticmethod
+    def get_inbox(opts, cookies):
+        return YayAPIClient.time_req(opts, 'get', 'messages/inbox', [], cookies)
+
+    @staticmethod
+    def get_outbox(opts, cookies):
+        return YayAPIClient.time_req(opts, 'get', 'messages/outbox', [], cookies)
+
+    @staticmethod
+    def send_message(opts, cookies, to, subject, content, save_to_sent=True, read_receipt=False):
+        data = dict(recipients = to,
+                    subject = subject,
+                    content = content,
+                    save_sent = 'save' if save_to_sent else 0,
+                    read_receipt = 'receipt' if read_receipt else 0)
+        return YayAPIClient.time_req(opts, 'post', 'message/send', data, cookies)
+
+    @staticmethod
+    def get_message(opts, cookies, message_id):
+        return YayAPIClient.time_req(opts, 'get', 'message/' + str(message_id), [], cookies)
+
+    @staticmethod
+    def get_user(opts, username):
+        return YayAPIClient.time_req(opts, 'get', 'user/' + username)
 
     @staticmethod
     def forgot_password(opts, email, key=None):
