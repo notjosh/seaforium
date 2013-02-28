@@ -14,7 +14,7 @@ class YayClient:
     @staticmethod
     def post_thread(opts, cookies, cat, subject, content):
         data = {
-            "category[]": 1,
+            "category[]": cat,
             "content": content,
             "subject": subject
         }
