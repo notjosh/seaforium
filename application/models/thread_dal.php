@@ -49,10 +49,16 @@ class Thread_dal extends Model
   {
   	
   	// check if user has posted $threads_per in the last $minutes;
-  	$threads_per = 2;
-  	$minutes = 1;
+  	$threads_per = (int)$this->config->item('throttle_new_thread_threads_per');
+  	$minutes = (int)$this->config->item('throttle_new_thread_minutes');
+  	$user_id = (int)$user_id;
+
+  	if ($threads_per < 1 || $minutes < 1) {
+  		// no config, or config allows infiniposting, so let posting happen
+  		return false;
+  	}
   	
-  	$sql = "SELECT * FROM threads WHERE user_id = ? AND created > (now() - INTERVAL ? MINUTE)";
+  	$sql = "SELECT * FROM threads WHERE user_id = ? AND created > (UTC_TIMESTAMP() - INTERVAL ? MINUTE)";
   	$results = $this->db->query($sql, Array($user_id, $minutes));
   	
   	$posted_threads = $results->num_rows();

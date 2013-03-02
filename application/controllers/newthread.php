@@ -48,7 +48,8 @@ class Newthread extends MY_Controller {
       /*
       !$this->thread_dal->are_you_posting_too_fast($this->session->userdata('user_id') ) ||
       */
-      if( $this->thread_dal->has_thread_just_been_posted($subject, $this->session->userdata('user_id')) || $this->thread_dal->are_you_posting_too_fast($this->session->userdata('user_id') == TRUE ))
+      if( $this->thread_dal->has_thread_just_been_posted($subject, $this->session->userdata('user_id'))
+          || $this->thread_dal->are_you_posting_too_fast($this->session->userdata('user_id')) == TRUE)
       {
 	   	return send_json($this->output, 400, array('error' => true,
                                                    'reason' =>  "<div class=\"error\">Your are posting too fast or this thread has just been posted.</div>"));   

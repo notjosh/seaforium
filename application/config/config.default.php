@@ -22,6 +22,10 @@ $config['site_name'] = 'YayHooray';
 // Require captchas during registration
 $config['use_captcha'] = FALSE;
 
+// Post throttling
+$config['throttle_new_thread_threads_per'] = 2;	// default: 2 (0 for unlimited)
+$config['throttle_new_thread_minutes']     = 1; // default: 1 (0 for unlimited)
+
 //name for emails and admin email address
 $config['email_signature'] = 'YayHooray.net';
 $config['email_addy'] = 'dale@arandomurl.com';
