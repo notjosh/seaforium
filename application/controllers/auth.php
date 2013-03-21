@@ -9,6 +9,7 @@ class Auth extends MY_Controller
     $this->load->helper(array('form', 'url', 'string', 'utils'));
     $this->load->library(array('form_validation', 'sauth', 'email', 'recaptcha'));
     $this->load->model('user_dal');
+    $this->load->model('thread_dal');
   }
 
   /**
@@ -110,21 +111,32 @@ class Auth extends MY_Controller
     }
 
     if ($this->form_validation->run()) {
-	  $username = preg_replace('/\s+/', ' ', $this->form_validation->set_value('username'));
+    $username = preg_replace('/\s+/', ' ', $this->form_validation->set_value('username'));
       $email = $this->form_validation->set_value('email');
       $password = $this->form_validation->set_value('password');
 
       $this->sauth->create_user($username, $email, $password);
       $this->sauth->login($username, $password);
 
-      if ($this->is_request_json()) {
-        return send_json($this->output, 200, array(
-          'ok'       => true,
-          'user_id'  => (int)$this->session->userdata('user_id'),
-          'username' => $this->session->userdata('username'),
-        ));
-      } else {
-        redirect('/');
+      // post welcome thread
+      $comment = array(
+        'user_id' => 2622, // WelcomeBot user id on the live site
+        'category' => 1,
+        'subject' => "Yayhooray! Please welcome {$username}",
+        'content' => "A warm welcome to our newest member, <i>{$username}</i>!",
+        'original_content' => "A warm welcome to our newest member, <i>{$username}</i>!"
+      );
+      $comment['thread_id'] = $this->thread_dal->new_thread($comment);
+      $this->thread_dal->new_comment($comment);
+
+      if ($this->is_request_json()) {                                                                                                                                                                   
+        return send_json($this->output, 200, array(                                                                                                                                                     
+          'ok'       => true,                                                                                                                                                                           
+          'user_id'  => (int)$this->session->userdata('user_id'),                                                                                                                                       
+          'username' => $this->session->userdata('username'),                                                                                                                                           
+        ));                                                                                                                                                                                             
+      } else {                                                                                                                                                                                          
+        redirect('/');                                                                                                                                                                                  
       }
     }
 
