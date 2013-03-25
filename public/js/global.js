@@ -271,7 +271,7 @@ function isThread() {
             path: '/messages/inbox'
           },
           {
-            seq: [113,109], //qu
+            seq: [113,117], //qu
             path: '/users'
           }
         ],
@@ -292,7 +292,7 @@ function isThread() {
       if(matchingRoute){
         self.location = matchingRoute.path;
       }
-    }
+    };
   }
   $('body').keypress(createKeyboardNavListener());
 
