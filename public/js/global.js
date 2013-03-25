@@ -246,4 +246,54 @@ function isThread() {
     });
   });
 
+  // keyboard nav
+  function createKeyboardNavListener(){
+    var ignore = ['input','textarea','button'],
+        routing = [
+          {
+            seq: [113,116], //qt
+            path: '/'
+          },
+          {
+            seq: [113,112], //qp
+            path: '/f/participated'
+          },
+          {
+            seq: [113,102], //qf
+            path: '/f/favorites'
+          },
+          {
+            seq: [113,104], //qh
+            path: '/f/hidden'
+          },
+          {
+            seq: [113,109], //qm
+            path: '/messages/inbox'
+          },
+          {
+            seq: [113,109], //qu
+            path: '/users'
+          }
+        ],
+        currentSequence = [],
+        matchingRoute;
+
+    return function(e){
+      if(ignore.indexOf(e.target.nodeName.toLowerCase()) !== -1){
+        return;
+      }
+
+      currentSequence.push(e.which);
+      currentSequence = currentSequence.slice(-2);
+
+      matchingRoute = _(routing).find(function(route){
+        return _(route.seq).isEqual(currentSequence);
+      });
+      if(matchingRoute){
+        self.location = matchingRoute.path;
+      }
+    }
+  }
+  $('body').keypress(createKeyboardNavListener());
+
 })();

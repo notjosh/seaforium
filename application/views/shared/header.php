@@ -49,6 +49,7 @@ $view_html = $this->session->userdata('view_html') == '1';
     <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="<?php echo $css; ?>?v=<?php echo $this->config->item('version'); ?>" />
     <script type="text/javascript" src="/js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="/js/underscore-min.js"></script>
 
     <base href="<?php echo site_url(); ?>" />
   </head>
