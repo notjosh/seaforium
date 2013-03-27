@@ -17,6 +17,7 @@ import load_generator
 
 from post_tests import TestPostFunction
 from basic_tests import TestBasicFunctions
+from api_tests import TestAPIFunctions
 from ConfigParser import SafeConfigParser
 
 def main():
@@ -51,8 +52,9 @@ def reset(cfg):
 
 def test(cfg):
     basic = unittest.TestLoader().loadTestsFromTestCase(TestBasicFunctions)
-    post = unittest.TestLoader().loadTestsFromTestCase(TestPostFunction)
-    suite = unittest.TestSuite([basic, post])
+    post  = unittest.TestLoader().loadTestsFromTestCase(TestPostFunction)
+    api   = unittest.TestLoader().loadTestsFromTestCase(TestAPIFunctions)
+    suite = unittest.TestSuite([basic, post, api])
     unittest.TextTestRunner(verbosity=2).run(suite)
 
 def bootstrap(cfg, users=5, threads=10, replies=100):

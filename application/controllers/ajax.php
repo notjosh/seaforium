@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Ajax extends Controller
+class Ajax extends MY_Controller
 {
   function Ajax()
   {
@@ -124,7 +124,16 @@ class Ajax extends Controller
           $this->thread_dal->is_first_comment($existing->thread_id, $comment_id)) {
 		    $this->thread_dal->update_comment($comment_id, $content, $processed,
                                               $this->session->userdata('user_id'));
-            echo $processed;
+
+            if ($this->is_request_json()) {
+              return send_json($this->output, 201, array(
+                'ok' => true,
+                'comment_id' => $comment_id,
+                'thread_id'  => $existing->thread_id,
+              ));
+            } else {
+              echo $processed;
+            }
       } else {
         echo "Permission Denied";
       }

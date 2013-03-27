@@ -69,6 +69,8 @@ class Threads extends Controller {
       'title' => $this->thread_dal->get_front_title(),
       'thread_result' => $this->threadsmodel->thread_results,
       'pagination' => $pages,
+      'pagination_object' => $this->pagination,
+      'pagination_row_offset' => (int)$args->pagination,
       'tab_links' => strlen($args->filter) > 0 ? '/f/'.$args->filter.'/' : '/o/',
       'tab_orders' => array(
         'started' => $args->ordering == 'started' && $args->dir == 'desc' ? 'asc' : 'desc',
@@ -142,6 +144,8 @@ class Threads extends Controller {
       'sort_disabled' => TRUE,
       'thread_result' => $this->threadsmodel->thread_results,
       'pagination' => $pages,
+      'pagination_object' => $this->pagination,
+      'pagination_row_offset' => (int)$args->pagination,
       'tab_links' => strlen($args->filter) > 0 ? '/f/'.$args->filter.'/' : '/o/',
       'tab_orders' => array(
         'started' => $args->ordering == 'started' && $args->dir == 'desc' ?

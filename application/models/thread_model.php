@@ -211,6 +211,8 @@ class Thread_model extends Model
 			)
 		);
 
+    $comment_id = $this->db->insert_id();
+
     $sql = "UPDATE
 				threads
 			SET
@@ -220,7 +222,7 @@ class Thread_model extends Model
 
     $this->db->query($sql,
 			array(
-				$this->db->insert_id(),
+				$comment_id,
 				$created,
 				$comment->thread_id
 			)
@@ -241,6 +243,8 @@ class Thread_model extends Model
 				$comment->thread_id
 			)
 		);
+
+    return $comment_id;
   }
 
   function update_comment_count($thread_id)

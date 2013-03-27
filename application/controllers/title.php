@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Title extends Controller
+class Title extends MY_Controller
 {
   function Title()
   {
@@ -57,10 +57,21 @@ class Title extends Controller
 
         $this->db->query($sql, array($title, $auth_id));
 
-        echo "saved";
+        if ($this->is_request_json()) {
+          return send_json($this->output, 200, array(
+            'ok' => true,
+            'title' => $title,
+          ));
+        } else {
+          echo "saved";
+        }
 
       } else {
-        echo "error";
+        if ($this->is_request_json()) {
+          return send_json($this->output, 412, array('error' => 'error'));
+        } else {
+          echo "error";
+        }
       }
     }
   }

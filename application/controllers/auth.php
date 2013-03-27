@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Auth extends Controller
+class Auth extends MY_Controller
 {
   function __construct()
   {
@@ -33,7 +33,11 @@ class Auth extends Controller
       return send_json($this->output, 401, $json);
     }
 
-    return send_json($this->output, 200, array('ok' => true));
+    return send_json($this->output, 200, array(
+      'ok'       => true,
+      'user_id'  => (int)$this->session->userdata('user_id'),
+      'username' => $this->session->userdata('username'),
+    ));
   }
 
   function activate($key)
@@ -67,7 +71,14 @@ class Auth extends Controller
   {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $this->sauth->logout();
-      return redirect('/');
+
+      if ($this->is_request_json()) {
+        return send_json($this->output, 200, array(
+          'ok'       => true,
+        ));
+      } else {
+        return redirect('/');
+      }
     }
   }
 
@@ -105,7 +116,16 @@ class Auth extends Controller
 
       $this->sauth->create_user($username, $email, $password);
       $this->sauth->login($username, $password);
-      redirect('/');
+
+      if ($this->is_request_json()) {
+        return send_json($this->output, 200, array(
+          'ok'       => true,
+          'user_id'  => (int)$this->session->userdata('user_id'),
+          'username' => $this->session->userdata('username'),
+        ));
+      } else {
+        redirect('/');
+      }
     }
 
     $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
@@ -132,7 +152,7 @@ class Auth extends Controller
     $key = $this->form_validation->set_value('key');
 
     // make sure the session key matches
-    if (!$key === $this->session->userdata('session_id')) {
+    if ($key !== $this->session->userdata('session_id')) {
       return send_json($this->output, 412, array('error' => "invalid key"));
     }
 

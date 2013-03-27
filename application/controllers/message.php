@@ -1,6 +1,6 @@
 <?php
 
-class Message extends Controller {
+class Message extends MY_Controller {
 
   function Message()
   {
@@ -148,7 +148,14 @@ class Message extends Controller {
             }
 
             // redirect them to the inbox
-            redirect('/messages/inbox');
+            if ($this->is_request_json()) {
+              return send_json($this->output, 201, array(
+                'ok' => true,
+                'message_id' => $message['id'],
+              ));
+            } else {
+              redirect('/messages/inbox');
+            }
           }
           // if there was 1 recipient and that 1 person has me enemied
           elseif (count($have_me_enemied) === 1 && count($recipient_ids) === 1) {

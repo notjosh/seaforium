@@ -48,7 +48,7 @@ def create_threads(opts, users, num):
     threads = []
     for i in range(num):
         user = random.choice(users)
-        thread = YayClient.post_thread(opts, user.cookies, 2, thread_title_generator(),
+        thread = YayClient.post_thread(opts, user.cookies, random.randint(0, 4) + 1, thread_title_generator(),
                                        reply_generator())
         threads.append(thread)
     return threads
