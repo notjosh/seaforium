@@ -279,7 +279,9 @@ class Sauth
 
             $ip = $this->ci->config->item('login_record_ip', 'auth');
             $time = $this->ci->config->item('login_record_time', 'auth');
-            $this->ci->user_dal->update_login_info($user->id, $ip, $time);
+            if(strtotime($user->last_login) < strtotime("-5 minutes") || $user->last_ip != $this->ci->input->ip_address()){
+              $this->ci->user_dal->update_login_info($user->id, $ip, $time);
+            }
             return TRUE;
           }
         } else {

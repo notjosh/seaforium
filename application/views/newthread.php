@@ -4,7 +4,7 @@ $subject = array(
 	'name'	=> 'subject',
 	'id'	=> 'subject',
 	'value' => set_value('subject'),
-	'maxlength'	=> 64,
+	'maxlength'	=> 96,
 	'size'	=> 30,
         'tabindex' => 5
 );

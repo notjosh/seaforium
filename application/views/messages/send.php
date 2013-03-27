@@ -25,7 +25,7 @@ $subject = array(
 	'name'	=> 'subject',
 	'id'	=> 'pm-subject',
 	'value' => set_value('subject', $message['subject']),
-	'maxlength'	=> 64,
+	'maxlength'	=> 96,
 	'size'	=> 30
 );
 

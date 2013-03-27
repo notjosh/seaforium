@@ -907,7 +907,7 @@ width: 150px;
 	margin-bottom: 15px;
 }
 
-div.tquote {
+blockquote.tquote {
     padding:4px 1em 8px;
     margin:8px 4em 1em 1em;
     border-left:1px dotted #999;
@@ -917,12 +917,12 @@ div.tquote {
 }
 
 
-div.tquote p {
+blockquote.tquote p {
     padding:8px 0 0 0;
     margin-bottom:0;
 }
 
-div.tquote div.tqname {
+blockquote.tquote div.tqname {
     font-size:11px;
     display:inline;
     font-style:normal;
