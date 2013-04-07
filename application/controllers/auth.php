@@ -211,6 +211,30 @@ class Auth extends MY_Controller
     return send_json($this->output, 200, array('ok' => true));
   }
 
+  function me()
+  {
+    $user = null;
+
+    if ($this->sauth->is_logged_in()) {
+      $user_id = $this->session->userdata('user_id');
+
+      if (false !== $user_id) {
+        $user = $this->user_dal->get_user_by_id($user_id);
+      }
+    }
+
+    if (null === $user) {
+      if ($this->is_request_json()) {
+        $json = array('error' => 'You are not logged in, fella.');
+        return send_json($this->output, 401, $json);
+      } else {
+        return show_error('You are not logged in, fella.', 401);
+      }
+    }
+
+    return redirect_with_format('/user/' . $user->username);
+  }
+
   /*
    * Callbacks
    */
