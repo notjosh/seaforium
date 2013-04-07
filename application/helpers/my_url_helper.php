@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('Butts.');
 
 function redirect_with_format($uri = '')
 {

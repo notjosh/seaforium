@@ -6,7 +6,7 @@ class Auth extends MY_Controller
   {
     parent::__construct();
 
-    $this->load->helper(array('form', 'url', 'string', 'utils'));
+    $this->load->helper(array('form', 'url', 'string', 'avatar', 'utils'));
     $this->load->library(array('form_validation', 'sauth', 'email', 'recaptcha'));
     $this->load->model('user_dal');
     $this->load->model('thread_dal');
@@ -34,10 +34,15 @@ class Auth extends MY_Controller
       return send_json($this->output, 401, $json);
     }
 
+    $user_id = $this->session->userdata('user_id');
+
     return send_json($this->output, 200, array(
       'ok'       => true,
-      'user_id'  => (int)$this->session->userdata('user_id'),
+      'user_id'  => (int)$user_id,
       'username' => $this->session->userdata('username'),
+      'avatar_url' => avatar_url_for_logged_in_user(true),
+      'unread_message_count' => (int)$this->message_dal->unread_messages($user_id),
+      'online_buddies' => $this->get_online_buddies(),
     ));
   }
 
@@ -129,12 +134,16 @@ class Auth extends MY_Controller
       $comment['thread_id'] = $this->thread_dal->new_thread($comment);
       $this->thread_dal->new_comment($comment);
 
-      if ($this->is_request_json()) {                                                                                                                                                                   
-        return send_json($this->output, 200, array(                                                                                                                                                     
-          'ok'       => true,                                                                                                                                                                           
-          'user_id'  => (int)$this->session->userdata('user_id'),                                                                                                                                       
-          'username' => $this->session->userdata('username'),                                                                                                                                           
-        ));                                                                                                                                                                                             
+      if ($this->is_request_json()) {
+        $user_id = $this->session->userdata('user_id');
+        return send_json($this->output, 200, array(
+          'ok'         => true,
+          'user_id'    => (int)$user_id,
+          'username'   => $this->session->userdata('username'),
+          'avatar_url' => avatar_url_for_logged_in_user(true),
+          'unread_message_count' => (int)$this->message_dal->unread_messages($user_id),
+          'online_buddies' => $this->get_online_buddies(),
+        ));
       } else {                                                                                                                                                                                          
         redirect('/');                                                                                                                                                                                  
       }
@@ -223,6 +232,7 @@ class Auth extends MY_Controller
       }
     }
 
+    // show error if not logged in
     if (null === $user) {
       if ($this->is_request_json()) {
         $json = array('error' => 'You are not logged in, fella.');
@@ -232,7 +242,42 @@ class Auth extends MY_Controller
       }
     }
 
-    return redirect_with_format('/user/' . $user->username);
+    // send response for logged in user
+    if ($this->is_request_json()) {
+      $user_id = $this->session->userdata('user_id');
+      return send_json($this->output, 200, array(                                                                                                                                                     
+        'ok'         => true,                                                                                                                                                                           
+        'user_id'    => (int)$user_id,
+        'username'   => $this->session->userdata('username'),
+        'avatar_url' => avatar_url_for_logged_in_user(true),
+        'unread_message_count' => (int)$this->message_dal->unread_messages($user_id),
+        'online_buddies' => $this->get_online_buddies(),
+      ));
+    } else {                                                                                                                                                                                          
+      return redirect_with_format('/user/' . $user->username);
+    }
+  }
+
+  function get_online_buddies()
+  {
+    $user_id = $this->session->userdata('user_id');
+
+    if (false === $user_id) {
+      return null;
+    }
+
+    $buddies = array();
+
+    $buddy_info = $this->user_dal->get_active_users($user_id);
+
+    foreach ($buddy_info['buddies']->result() as $row) {
+      $buddies[] = array(
+        'user_id'  => $row->id,
+        'username' => $row->username,
+      );
+    }
+
+    return $buddies;
   }
 
   /*

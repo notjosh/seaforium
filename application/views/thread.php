@@ -1,5 +1,7 @@
 <?php
 
+$this->load->helper('avatar');
+
 $logged_in = $this->sauth->is_logged_in();
 
 ?>
@@ -101,7 +103,7 @@ foreach($comments as $row) {
           </a>
         </div>
         <div class="time"><?=timespan($row->created, time()) ?></div>
-        <div class="user-information" style="background: url(/img/emoticons/<?=$row->emoticon ? $row->author_id : '0'; ?>.gif);">
+        <div class="user-information" style="background: url(<?php echo avatar_url($row->emoticon ? $row->author_id : '0') ?>);">
           <ul>
           <?php if ($logged_in) { ?>
             <li><a href="/buddies/<?=$row->url_safe_author_name ?>"><?php echo ($row->author_acquaintance_name === 'buddy')? "Your $row->author_acquaintance_name!" : 'BUDDY? IGNORE?'; ?></a></li>

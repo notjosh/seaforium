@@ -1,4 +1,8 @@
+<?php header('Content-Type: application/json') ?>
+
 <?php
+$this->load->helper('avatar');
+
 function null_if_empty_string($string) {
 	if (0 === strlen(trim($string))) {
 		return null;
@@ -16,9 +20,10 @@ foreach ($recent_posts as $key => $post) {
 }
 
 $user_profile = array(
-	'id'       => (int)$user_data->id,
-	'username' => $user_data->username,
-	'created'  => date(DateTime::ISO8601, strtotime($user_data->created)),
+	'id'         => (int)$user_data->id,
+	'username'   => $user_data->username,
+	'created'    => date(DateTime::ISO8601, strtotime($user_data->created)),
+	'avatar_url' => avatar_url_for_logged_in_user(true),
 
 	'online_status' => strtolower(str_replace(' ', '_', $user_data->online_status)),
 	'last_login' => null === $user_data->last_login ? null : date(DateTime::ISO8601, strtotime($user_data->last_login)),

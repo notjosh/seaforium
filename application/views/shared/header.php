@@ -1,5 +1,6 @@
 <?php
 
+$this->load->helper('avatar');
 
 $username = $this->session->userdata('username');
 $user_id = $this->session->userdata('user_id');
@@ -94,7 +95,7 @@ $login_txt = $button_texts[array_rand($button_texts)];
             Hi, <a href="/user/<?php echo $username; ?>"><?php echo $username; ?></a>
           </h4>
           <a href="/user/<?php echo $username; ?>">
-	    <img src="/img/emoticons/<?php echo $this->session->userdata('emoticon') ? $user_id : 0; ?>.gif" class="main_avatar" />
+	    <img src="<?php echo avatar_url_for_logged_in_user() ?>" class="main_avatar" />
           </a>
           <ul>
 	    <li><a href="/preferences" id="preferences">Preferences</a></li>

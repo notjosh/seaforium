@@ -567,7 +567,7 @@ class User_dal extends Model
    */
   function get_active_users($user_id)
   {
-    $sql = "SELECT DISTINCT users.username
+    $sql = "SELECT DISTINCT users.id, users.username
 	    FROM users
 	    RIGHT JOIN acquaintances
 	      ON acquaintances.acq_user_id = users.id
