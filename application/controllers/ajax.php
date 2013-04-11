@@ -37,6 +37,16 @@ class Ajax extends MY_Controller
     $thread_info = $this->thread_dal->comment_count_info($thread_id);
     $db_count = $thread_info->max_rows;
 
+    // handle JSON, otherwise fail through to HTML output
+    if ($this->is_request_json()) {
+      echo json_encode(array(
+        'thread_id'         => $thread_id,
+        'comment_count'     => $db_count,
+        'new_comment_count' => $db_count - $current_count,
+      ));
+      return;
+    }
+
     // if the numbers dont match, throw out some html
     if ($db_count > $current_count) {
 
