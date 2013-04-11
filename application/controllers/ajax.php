@@ -39,12 +39,11 @@ class Ajax extends MY_Controller
 
     // handle JSON, otherwise fail through to HTML output
     if ($this->is_request_json()) {
-      echo json_encode(array(
+      return send_json($this->output, 200, array(
         'thread_id'         => $thread_id,
         'comment_count'     => $db_count,
         'new_comment_count' => $db_count - $current_count,
       ));
-      return;
     }
 
     // if the numbers dont match, throw out some html
